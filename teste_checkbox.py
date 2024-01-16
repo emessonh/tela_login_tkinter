@@ -24,8 +24,8 @@ for i in range(len(documentos)):
 
     # checkbutton.getvar
 
-lista_docs.config(yscrollcommand=scrollbar.set)
-scrollbar.config(command=lista_docs.yview)
+# lista_docs.config(yscrollcommand=scrollbar.set)
+# scrollbar.config(command=lista_docs.yview)
 
 # disable the widget so users can't insert text into it
 lista_docs.configure(state="disabled")
@@ -37,12 +37,16 @@ lista_docs.configure(state="disabled")
 
 def select_docs():
     # print(lista_docs.ge)
-    print(len(lista_docs.get(1.0, END)))
-    for doc in lista_docs.getvar().split('\n'):
-        # print(str(lista_docs.get(1.0, END)))
-        # doc = intVar()
-        print(type(doc))
-        print(doc)
+    # print(lista_docs.window)
+    print(lista_docs.window_cget('.!text.!checkbutton3', 'window'))
+    window = lista_docs.window_cget('.!text.!checkbutton3', 'create')
+    print(window.window_create())
+    print(window.cget('text'))
+    # for doc in lista_docs.get(1.0, END).split('\n'):
+    #     # print(str(lista_docs.get(1.0, END)))
+    #     # doc = intVar()
+    #     print(type(doc))
+    #     print(doc.cget())
         # if doc.cget('text'):
         #     print(doc)
 

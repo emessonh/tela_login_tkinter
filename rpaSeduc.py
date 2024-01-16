@@ -20,7 +20,7 @@ senha = None
 
 # }
 
-
+FONTE_PADRAO = ('Helvetica', 9)
 
 # Tela de login
 
@@ -35,21 +35,21 @@ def tela_login():
    janela.title('Assinaturas SEI')
    janela.resizable(width=False, height=False)
    # Titulo da tela
-   container_titulo = Frame(janela, padx=110, pady=10) 
+   container_titulo = Frame(janela, padx=90, pady=10) 
    container_titulo.grid()
-   titulo = Label(container_titulo, text='Login SEI')
+   titulo = Label(container_titulo, text='Login SEI', font=('Helvetica', 10, 'bold'))
    titulo.grid()
    # Usuario
-   container_usuario = Frame(janela, padx=110, pady=10)
+   container_usuario = Frame(janela, padx=90, pady=10)
    container_usuario.grid()
-   label_usuario = Label(container_usuario, text='Usuário').grid()
-   entry_usuario = Entry(container_usuario, width=30)
+   label_usuario = Label(container_usuario, text='Usuário', font=FONTE_PADRAO).grid()
+   entry_usuario = Entry(container_usuario, width=30, font=FONTE_PADRAO)
    entry_usuario.grid()
    # Senha
-   container_senha = Frame(janela, padx=110, pady=10)
+   container_senha = Frame(janela, padx=90, pady=10)
    container_senha.grid()
-   label_senha = Label(container_senha, text='Senha').grid()
-   entry_senha = Entry(container_senha, show='*', width=30)
+   label_senha = Label(container_senha, text='Senha', font=FONTE_PADRAO).grid()
+   entry_senha = Entry(container_senha, show='*', width=30, font=FONTE_PADRAO)
    entry_senha.grid()
 
    def usuario_senha():
@@ -63,7 +63,7 @@ def tela_login():
    # Botão confirmação
    container_botao = Frame(janela, padx=140, pady=10)
    container_botao.grid()
-   botao = Button(container_botao, text='Login', command=usuario_senha, width='10').grid()
+   botao = Button(container_botao, text='Login', command=usuario_senha, width='10', font=FONTE_PADRAO).grid()
    janela.mainloop()
 
 
@@ -75,17 +75,17 @@ def selec_documentos():
    janela_docs = Tk()
    janela_docs.geometry('450x250')
    janela_docs.title('Documentos para assinatura')
-   container_documentos = Frame(janela_docs, padx=100, pady=30)
+   container_documentos = Frame(janela_docs, padx=80, pady=20)
    # scroll_list = Scrollbar(container_documentos)
    container_documentos.grid()
    # C1 = Checkbutton(janela_docs, text = "Music")
    # C1.grid()
-   documentos = ['todos','doc 1', 'doc 2', 'doc 3', 'doc 4', 'doc 5', 'doc 6', 'doc 7', 'doc 8', 'doc 9', 'doc 10']
-   sel_docs = Label(container_documentos, text='Selecione os documentos').grid()
+   documentos = ['Todos','doc 1', 'doc 2', 'doc 3', 'doc 4', 'doc 5', 'doc 6', 'doc 7', 'doc 8', 'doc 9', 'doc 10']
+   sel_docs = Label(container_documentos, text='Selecione os documentos', font=('Helvetica', 10, 'bold')).grid()
    # combobox = ttk.Combobox(janela, state="readonly", values=documentos, height=5)
    # combobox = ttk.Combobox(container_documentos, state="disabled")
    # combobox.current(0)
-   listbox = Listbox(container_documentos, selectmode="multiple", exportselection=0, height=5, width=40, relief='groove')
+   listbox = Listbox(container_documentos, selectmode="multiple", selectborderwidth=5, exportselection=0, activestyle=DOTBOX, height=5, width=40, font=FONTE_PADRAO)
    for doc in documentos:
       listbox.insert(END, doc)
    listbox.grid(row=1)
@@ -95,10 +95,9 @@ def selec_documentos():
       listbox.itemconfigure(i, background='#f0f0ff')
    
    if len(documentos) > 5:
-      scrollbar = Scrollbar(container_documentos, orient="vertical", relief='solid')
+      scrollbar = Scrollbar(container_documentos, orient="vertical")
       scrollbar.config(command=listbox.yview)
       scrollbar.grid(row=1, column=1, sticky=NS)
-      # scrollbar.pack(side="right", fill="y")
       listbox.config(yscrollcommand=scrollbar.set)
 
    # define a function to update the combobox when the user selects or deselects a value
@@ -121,7 +120,7 @@ def selec_documentos():
 
    container_botao = Frame(janela_docs, padx=100, pady=5)
    container_botao.grid()
-   confirmacao = Button(container_botao, text='Selecionar', command=seleciona_docs)
+   confirmacao = Button(container_botao, text='Selecionar', command=seleciona_docs, font=FONTE_PADRAO)
    confirmacao.grid()
    # confirmacao.bind('<Return>', seleciona_docs(janela_docs))
    janela_docs.mainloop()
