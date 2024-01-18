@@ -3,13 +3,16 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from tkinter import *
 from tkinter import ttk
+import pandas as pd
 from dotenv import load_dotenv
 import os
-# import time
 
+# import time
+FONTE_PADRAO = ('Helvetica', 9)
 docs_selecionados = [] 
 usuario = None
 senha = None
+opcao_sel = None
 
 # PROXY = f'http://{os.getenv('usuario')}:{os.getenv('senha')}@{os.getenv('firewall')}'
 # webdriver.DesiredCapabilities.CHROME['proxy'] = {
@@ -20,13 +23,16 @@ senha = None
 
 # }
 
-FONTE_PADRAO = ('Helvetica', 9)
+def busca_documentos():
+   planilha = pd.read_excel(fr'{os.getcwd()}\teste_docs.xlsx')
+   df = pd.DataFrame(planilha)
+   return df.iloc[:, 0]
 
 # Tela de login
 
 def tela_login():
    janela = Tk()
-   janela.geometry('400x250')
+   janela.geometry('400x350')
 
    # logo seduc
    # diretorio_atual = os.getcwd()
@@ -51,14 +57,40 @@ def tela_login():
    label_senha = Label(container_senha, text='Senha', font=FONTE_PADRAO).grid()
    entry_senha = Entry(container_senha, show='*', width=30, font=FONTE_PADRAO)
    entry_senha.grid()
+   # Ambiente
+   container_ambiente = Frame(janela, padx=90, pady=10)
+   container_ambiente.grid()
+   Label(container_ambiente, text='Ambiente', font=FONTE_PADRAO).grid(columnspan=2)
+   opcao = IntVar()
+
+   def seleciona_ambiente():
+      global opcao_sel
+      opcao_sel = str(opcao.get())
+
+   botao_hml = Radiobutton(container_ambiente, text='hml', variable=opcao, value=1, font=FONTE_PADRAO, command=seleciona_ambiente)
+   botao_hml.grid(row=1, column=0)
+   botao_producao = Radiobutton(container_ambiente, text='produção', variable=opcao, value=2, font=FONTE_PADRAO, command=seleciona_ambiente)
+   botao_producao.grid(row=1, column=1)
 
    def usuario_senha():
       global usuario
       global senha
+      global opcao_sel
       usuario = entry_usuario.get()
       senha = entry_senha.get()
-      janela.destroy()
-      selec_documentos()
+      if usuario != '' and senha != '' and opcao_sel != None:
+         janela.destroy()
+         selec_documentos()
+      else:
+         if usuario == '':
+            label_usuario = Label(container_usuario, text='Campo obrigatório', fg='red', font=FONTE_PADRAO)
+            label_usuario.grid(row=2)
+         if senha == '':
+            label_senha = Label(container_senha, text='Campo obrigatório', fg='red', font=FONTE_PADRAO)
+            label_senha.grid(row=2)
+         if opcao_sel == None:
+            label_senha = Label(container_ambiente, text='Selecione um ambiente', fg='red', font=FONTE_PADRAO)
+            label_senha.grid(row=2, columnspan=2)
 
    # Botão confirmação
    container_botao = Frame(janela, padx=140, pady=10)
@@ -66,26 +98,18 @@ def tela_login():
    botao = Button(container_botao, text='Login', command=usuario_senha, width='10', font=FONTE_PADRAO).grid()
    janela.mainloop()
 
-
-
-
-
 # Selecionar os documentos
 def selec_documentos():
    janela_docs = Tk()
    janela_docs.geometry('450x250')
    janela_docs.title('Documentos para assinatura')
    container_documentos = Frame(janela_docs, padx=80, pady=20)
-   # scroll_list = Scrollbar(container_documentos)
    container_documentos.grid()
-   # C1 = Checkbutton(janela_docs, text = "Music")
-   # C1.grid()
-   documentos = ['Todos','doc 1', 'doc 2', 'doc 3', 'doc 4', 'doc 5', 'doc 6', 'doc 7', 'doc 8', 'doc 9', 'doc 10']
+   dados_planilha = busca_documentos()
+   documentos = [str(doc) for doc in dados_planilha]
    sel_docs = Label(container_documentos, text='Selecione os documentos', font=('Helvetica', 10, 'bold')).grid()
-   # combobox = ttk.Combobox(janela, state="readonly", values=documentos, height=5)
-   # combobox = ttk.Combobox(container_documentos, state="disabled")
-   # combobox.current(0)
    listbox = Listbox(container_documentos, selectmode="multiple", selectborderwidth=5, exportselection=0, activestyle=DOTBOX, height=5, width=40, font=FONTE_PADRAO)
+   listbox.insert(END, 'Todos')
    for doc in documentos:
       listbox.insert(END, doc)
    listbox.grid(row=1)
@@ -100,19 +124,6 @@ def selec_documentos():
       scrollbar.grid(row=1, column=1, sticky=NS)
       listbox.config(yscrollcommand=scrollbar.set)
 
-   # define a function to update the combobox when the user selects or deselects a value
-   # def update_combobox():
-   #    # Get selected values from the Listbox widget
-   #    selected_values = [listbox.get(idx) for idx in listbox.curselection()]
-      
-   #    # Update the combobox with the selected values
-   #    combobox.configure(width=40, height=5)
-   #    combobox.set(", ".join(selected_values))
-      
-   # bind the update_combobox function to the Listbox widget
-   # listbox.bind("<<ListboxSelect>>", lambda _: update_combobox())
-   # combobox.grid()
-
    def seleciona_docs():
       for i in listbox.curselection():
          docs_selecionados.append(listbox.get(i))
@@ -122,11 +133,13 @@ def selec_documentos():
    container_botao.grid()
    confirmacao = Button(container_botao, text='Selecionar', command=seleciona_docs, font=FONTE_PADRAO)
    confirmacao.grid()
-   # confirmacao.bind('<Return>', seleciona_docs(janela_docs))
    janela_docs.mainloop()
 
 tela_login()
-# print(docs_selecionados)
+print(docs_selecionados)
+print(usuario)
+print(senha)
+print(opcao_sel)
 
 # tela_login()
 

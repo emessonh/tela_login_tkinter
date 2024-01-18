@@ -35,6 +35,10 @@ lista_docs.configure(state="disabled")
 #     checkbox.config(text=doc)
 #     checkbox.grid()
 
+opcao = IntVar()
+Radiobutton(janela, text='hml', variable=opcao, value=1).grid(row=5, column=0)
+Radiobutton(janela, text='produção', variable=opcao, value=2).grid(row=5, column=1)
+
 def select_docs():
     # print(lista_docs.ge)
     # print(lista_docs.window)
