@@ -6,7 +6,9 @@ from tkinter import ttk
 
 janela = Tk()
 janela.geometry('450x250')
-lista_docs = Text(janela, pady=20, padx=150, height=5, width=50)
+container_select = Frame(janela, padx=150)
+container_select.grid()
+lista_docs = Text(container_select, pady=30, padx=30)
 lista_docs.grid()
 scrollbar = Scrollbar(lista_docs)
 scrollbar.grid()
@@ -35,9 +37,7 @@ lista_docs.configure(state="disabled")
 #     checkbox.config(text=doc)
 #     checkbox.grid()
 
-opcao = IntVar()
-Radiobutton(janela, text='hml', variable=opcao, value=1).grid(row=5, column=0)
-Radiobutton(janela, text='produção', variable=opcao, value=2).grid(row=5, column=1)
+
 
 def select_docs():
     # print(lista_docs.ge)
@@ -54,7 +54,9 @@ def select_docs():
         # if doc.cget('text'):
         #     print(doc)
 
-botao_sel = Button(janela, text='selecionar', command=select_docs)
+container_botao = Frame(janela, pady=9)
+container_botao.grid()
+botao_sel = Button(container_botao, text='selecionar', command=select_docs)
 botao_sel.grid()
 janela.mainloop()
 
