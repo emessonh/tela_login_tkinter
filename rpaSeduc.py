@@ -132,28 +132,28 @@ def selec_documentos():
       janela_docs.destroy()
 
 
-   # def seleciona_todos(event):
-   #    global todos_docs_selec
-   #    opcoes = listbox.curselection()
-   #    print(opcoes)
-   #    if 0 in opcoes and not todos_docs_selec:
-   #       print('selecionou todos')
-   #       for i in range(1, len(dados_planilha)+1):
-   #          listbox.select_set(i)
-   #       todos_docs_selec = True
+   def seleciona_todos(event):
+      global todos_docs_selec
+      opcoes = listbox.curselection()
+      # print(opcoes)
+      if 0 in opcoes and not todos_docs_selec:
+         # print('selecionou todos')
+         for i in range(1, len(dados_planilha)+1):
+            listbox.select_set(i)
+         todos_docs_selec = True
          
       
-   #    elif 0 not in opcoes and todos_docs_selec:
-   #       print('desmarcou todos os itens')
-   #       listbox.selection_clear(0, END)
-   #       todos_docs_selec = False
+      elif 0 not in opcoes and todos_docs_selec:
+         # print('desmarcou todos os itens')
+         listbox.selection_clear(0, END)
+         todos_docs_selec = False
 
    # print(listbox.curselection())
    container_botao = Frame(janela_docs, padx=100, pady=5)
    container_botao.grid()
    confirmacao = Button(container_botao, text='Selecionar', command=seleciona_docs, font=FONTE_PADRAO)
    confirmacao.grid()
-   # listbox.bind('<Button-1>', seleciona_todos)
+   listbox.bind('<<ListboxSelect>>', seleciona_todos)
    janela_docs.mainloop()
 
 tela_login()
